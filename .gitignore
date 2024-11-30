@@ -1,0 +1,54 @@
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Build results
+bin/
+obj/
+
+# VS Code directories
+.vscode/
+
+# Rider directories
+.idea/
+
+# JetBrains Rider files
+.idea/
+
+# Windows Installer files
+Thumbs.db
+ehthumbs.db
+
+# .NET Core files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore the appsettings file that may contain secrets
+appsettings.json
+appsettings.Development.json
+
+# Exclude nuget packages
+.nuget/
+
+# Ignore database files, if using SQLite or other local DB
+*.db
+*.sqlite
+
+# Ignore logs
+*.log
+
+# Exclude ASP.NET temporary files
+wwwroot/
+
+# Exclude ASP.NET Core development certificates
+aspnetcorev2/
+
+# Ignore generated files
+CloudNest.Api.sln.DotSettings
+CloudNest.Api.csproj.user
+
+# Visual Studio for Mac
+.vsconfig
