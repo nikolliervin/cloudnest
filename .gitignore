@@ -49,6 +49,6 @@ aspnetcorev2/
 # Ignore generated files
 CloudNest.Api.sln.DotSettings
 CloudNest.Api.csproj.user
-
+Migrations
 # Visual Studio for Mac
 .vsconfig
