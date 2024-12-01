@@ -13,6 +13,8 @@ public static class ResponseMessages
     public static string DirectoryUpdated = "Directory updated successfully.";
     public static string DirectoryDeleted = "Directory deleted successfully.";
     public static string DirectoryNotFound = "Directory not found.";
+
+    public static string CouldNotUpdateDirectory = "Could Not Update Directory";
     public static string DirectoryExists = "Directory already exists.";
     public static string InvalidDirectoryId = "Invalid directory ID.";
     public static string DirectoryDeletionFailed = "Directory deletion failed.";

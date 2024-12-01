@@ -40,7 +40,7 @@ namespace CloudNest.Api.Controllers
             return Ok(directoryResponse);
         }
 
-        [HttpPut]
+        [HttpPut("update")]
         [Authorize]
         public async Task<IActionResult> UpdateDirectory([FromBody] DirectoryDto directoryDto)
         {

@@ -37,7 +37,8 @@ namespace CloudNest.Api.Services
             _context.Directories.Add(directory);
             await _context.SaveChangesAsync();
             var directoryCreated = DirectoryHelper.CreateDirectoryInFileSystem(directoryDto, _baseDirectoryPath);
-            if(directoryCreated){
+            if (directoryCreated)
+            {
                 await _context.SaveChangesAsync();
                 var responseDto = _mapper.Map<DirectoryDto>(directory);
                 return new ApiResponse<DirectoryDto>(responseDto, ResponseMessages.DirectoryCreated);
@@ -54,17 +55,19 @@ namespace CloudNest.Api.Services
                 return new ApiResponse<DirectoryDto>(ResponseMessages.DirectoryNotFound);
             }
 
-            _mapper.Map(directoryDto, directory);
-
             directory.UpdatedAt = DateTime.UtcNow;
             directory.UpdatedBy = directoryDto.UserId;
 
-            _context.Directories.Update(directory);
-            await _context.SaveChangesAsync();
+            var directoryUpdated = DirectoryHelper.UpdateDirectoryInFileSystem(directoryDto, directory, _baseDirectoryPath);
+            if (directoryUpdated)
+            {
+                _context.Directories.Update(directory);
+                await _context.SaveChangesAsync();
+                var responseDto = _mapper.Map<DirectoryDto>(directory);
+                return new ApiResponse<DirectoryDto>(responseDto, ResponseMessages.DirectoryUpdated);
+            }
 
-            var responseDto = _mapper.Map<DirectoryDto>(directory);
-
-            return new ApiResponse<DirectoryDto>(responseDto, ResponseMessages.DirectoryUpdated);
+            return new ApiResponse<DirectoryDto>(ResponseMessages.CouldNotUpdateDirectory);
         }
 
         public async Task<ApiResponse<bool>> DeleteDirectoryAsync(Guid id)
