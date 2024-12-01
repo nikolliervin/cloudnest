@@ -8,5 +8,20 @@ public static class ResponseMessages
     public static readonly string CouldNotCreateUser = "Could not create user!";
     public static readonly string ExceptionMessage = "An unexpected error occurred.";
 
+    public static string DirectoryCreated = "Directory created successfully.";
+
+    public static string DirectoryUpdated = "Directory updated successfully.";
+    public static string DirectoryDeleted = "Directory deleted successfully.";
+    public static string DirectoryNotFound = "Directory not found.";
+    public static string DirectoryExists = "Directory already exists.";
+    public static string InvalidDirectoryId = "Invalid directory ID.";
+    public static string DirectoryDeletionFailed = "Directory deletion failed.";
+    public static string DirectoryRetrievalFailed = "Failed to retrieve directory.";
+    public static string UserDirectoriesRetrieved = "User directories retrieved successfully.";
+    public static string ErrorOccurred = "An error occurred while processing your request.";
+    public static string InvalidDirectoryData = "Invalid direcotry data.";
+
+
+
 
 }

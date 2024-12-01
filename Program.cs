@@ -24,6 +24,7 @@ builder.Services.AddIdentity<User, Role>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IDirectoryService, DirectoryService>();
 builder.Services.AddSingleton<JwtTokenHelper>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddHealthChecks();
@@ -48,6 +49,12 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = symmetricSecurityKey
     };
 });
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<UserHelper>();
+
+
 
 
 var app = builder.Build();
