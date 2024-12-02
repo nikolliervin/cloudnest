@@ -23,6 +23,17 @@ public static class ResponseMessages
     public static string ErrorOccurred = "An error occurred while processing your request.";
     public static string InvalidDirectoryData = "Invalid direcotry data.";
 
+    public static string DirectoryShareExists = "Directory is already shared with this user.";
+
+    public static string DirectoryShared = "Directory shared successfully.";
+
+    public static string DirectoryShareNotFound = "Directory shared not found.";
+
+
+
+
+
+
 
 
 

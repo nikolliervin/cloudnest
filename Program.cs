@@ -8,6 +8,7 @@ using System.Text;
 using CloudNest.Api.Helpers;
 using CloudNest.Api.Middlewares;
 using Serilog;
+using CloudNest.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddIdentity<User, Role>()
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDirectoryService, DirectoryService>();
+builder.Services.AddScoped<IDirectoryShareService, DirectoryShareService>();
 builder.Services.AddSingleton<JwtTokenHelper>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddHealthChecks();

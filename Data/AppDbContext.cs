@@ -17,7 +17,25 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string>
     }
 
     public DbSet<Directory> Directories { get; set; }
+    public DbSet<DirectoryShare> DirectoryShares { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<DirectoryShare>()
+            .HasKey(ds => new { ds.DirectoryId, ds.UserId });
+
+        modelBuilder.Entity<DirectoryShare>()
+                .HasKey(ds => new { ds.DirectoryId, ds.UserId });
+
+        modelBuilder.Entity<DirectoryShare>()
+            .HasOne(ds => ds.Directory)
+            .WithMany(d => d.DirectoryShares)
+            .HasForeignKey(ds => ds.DirectoryId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+    }
     public override int SaveChanges()
     {
         SetAuditFields();
