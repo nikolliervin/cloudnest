@@ -59,9 +59,9 @@ namespace CloudNest.Api.Controllers
             return Ok(directoryResponse);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete")]
         [Authorize]
-        public async Task<IActionResult> DeleteDirectory(Guid id)
+        public async Task<IActionResult> DeleteDirectory([FromQuery] Guid id)
         {
             if (id == Guid.Empty)
             {
@@ -78,7 +78,7 @@ namespace CloudNest.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("directory")]
         [Authorize]
         public async Task<IActionResult> GetDirectory(Guid id)
         {
@@ -97,7 +97,7 @@ namespace CloudNest.Api.Controllers
             return Ok(directoryResponse);
         }
 
-        [HttpGet("user")]
+        [HttpGet("directories")]
         [Authorize]
 
         public async Task<IActionResult> GetUserDirectories()
