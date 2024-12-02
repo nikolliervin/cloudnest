@@ -50,7 +50,7 @@ namespace CloudNest.Api.Helpers
             string updatedFullPath = directoryDto.Name;
 
             if (directoryDto.ParentDirectoryId != existingDirectory.ParentDirectoryId)
-                updatedFullPath = Path.Combine(directoryDto.ParentDirectoryId.ToString(), directoryDto.Name);
+                updatedFullPath = Path.Combine(directoryDto.FullPath);
             else
                 updatedFullPath = Path.Combine(Path.GetDirectoryName(existingDirectory.FullPath), directoryDto.Name);
 
