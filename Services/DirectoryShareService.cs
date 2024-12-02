@@ -36,7 +36,8 @@ namespace CloudNest.Api.Services
             var DirectoryShares = new DirectoryShare
             {
                 DirectoryId = directoryShareDto.DirectoryId,
-                UserId = directoryShareDto.UserId
+                UserId = directoryShareDto.UserId,
+                ExpiryDate = directoryShareDto.ExpiryDate,
             };
 
             await _context.DirectoryShares.AddAsync(DirectoryShares);
@@ -67,7 +68,7 @@ namespace CloudNest.Api.Services
                     d => d.DirectoryId,
                     ds => ds.DirectoryId,
                     (d, ds) => new { d, ds })
-                .Where(x => x.ds.UserId == userId && !x.ds.DeletedAt.HasValue)
+                .Where(x => x.ds.UserId == userId && !x.ds.DeletedAt.HasValue && x.ds.ExpiryDate < DateTime.Now)
                 .Select(x => x.d)
                 .ToListAsync();
             return new ApiResponse<List<DirectoryDto>>(_mapper.Map<List<DirectoryDto>>(sharedDirectories));

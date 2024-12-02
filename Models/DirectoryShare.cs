@@ -12,6 +12,7 @@ namespace CloudNest.Api.Models
         public Guid DirectoryShareId { get; set; }
         public Guid DirectoryId { get; set; }
         public Guid UserId { get; set; }
+        public DateTime? ExpiryDate { get; set; } = DateTime.MaxValue;
         public bool Deleted { get; set; }
 
         public virtual Directory Directory { get; set; }

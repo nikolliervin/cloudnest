@@ -10,5 +10,7 @@ namespace CloudNest.Api.Models.Dtos
         public Guid DirectoryId { get; set; }
         public Guid UserId { get; set; }
 
+        public DateTime? ExpiryDate { get; set; }
+
     }
 }
