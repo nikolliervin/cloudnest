@@ -43,5 +43,16 @@ namespace CloudNest.Api.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("get-shared")]
+        public async Task<IActionResult> GetSharedDirectories([FromQuery] Guid userId)
+        {
+            var response = await _directoryShareService.GetSharedDirectoriesAsync(userId);
+            if (!response.Success)
+            {
+                return BadRequest(response.Message);
+            }
+            return Ok(response.Data);
+        }
     }
 }
