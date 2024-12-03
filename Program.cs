@@ -9,6 +9,7 @@ using CloudNest.Api.Helpers;
 using CloudNest.Api.Middlewares;
 using Serilog;
 using CloudNest.Api.Models;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
