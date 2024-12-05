@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CloudNest.Api.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CloudNest.Api.Models
 {
+    [Keyless]
     public class DirectoryPermission : IAuditEntry
     {
         public Guid DirectoryId { get; set; }

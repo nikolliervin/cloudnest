@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using CloudNest.Api.Interfaces;
@@ -8,8 +9,9 @@ namespace CloudNest.Api.Models
 {
     public class UserPermissions : IAuditEntry
     {
-        public Guid UserId { get; set; }
+        [Key]
         public Guid PermissionId { get; set; }
+        public Guid UserId { get; set; }
         public string PermissionType { get; set; }
         public string PermissionValue { get; set; }
         public DateTime? ExpirationDate { get; set; }

@@ -40,8 +40,8 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string>
             .HasForeignKey(ds => ds.DirectoryId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<UserClaim>()
-            .ToTable("AspNetUserClaims");
+        modelBuilder.Entity<DirectoryPermission>()
+              .HasKey(dp => new { dp.DirectoryId, dp.PermissionId });
 
 
 
