@@ -18,6 +18,12 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string>
 
     public DbSet<Directory> Directories { get; set; }
     public DbSet<DirectoryShare> DirectoryShares { get; set; }
+    public DbSet<UserPermissions> UserPermissions { get; set; }
+
+    public DbSet<DirectoryPermission> DirectoryPermissions { get; set; }
+
+
+    //public DbSet<UserClaim> UserClaims { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -33,6 +39,10 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string>
             .WithMany(d => d.DirectoryShares)
             .HasForeignKey(ds => ds.DirectoryId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<UserClaim>()
+            .ToTable("AspNetUserClaims");
+
 
 
     }
