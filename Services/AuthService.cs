@@ -40,7 +40,7 @@ namespace CloudNest.Api.Services
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
             if (result.Succeeded)
-            {
+            {   
                 return new ApiResponse<RegisterDto>(_mapper.Map<RegisterDto>(user), ResponseMessages.UserCreatedSuccessfully);
             }
             return new ApiResponse<RegisterDto>(ResponseMessages.CouldNotCreateUser);
