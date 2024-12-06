@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CloudNest.Api.Helpers
 {
-    public class DirectoryPermissionAttribute : AuthorizeAttribute, IAuthorizationRequirement
+    public class PermissionsAttribute : AuthorizeAttribute, IAuthorizationRequirement
     {
         public string Permission { get; }
 
-        public DirectoryPermissionAttribute(string permission)
+        public PermissionsAttribute(string permission)
         {
             Permission = permission;
         }
