@@ -46,15 +46,16 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string>
 
 
     }
-    public override int SaveChanges()
-    {
-        SetAuditFields();
-        return base.SaveChanges();
-    }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        SetAuditFields();
+        var hasAuditEntries = ChangeTracker.Entries()
+       .Any(e => e.Entity is IAuditEntry);
+
+        if (hasAuditEntries)
+        {
+            SetAuditFields();
+        }
         return base.SaveChangesAsync(cancellationToken);
     }
 
