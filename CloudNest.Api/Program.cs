@@ -13,6 +13,7 @@ using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.OpenApi;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,8 @@ builder.Services.AddScoped<IPermissionsService, PermissionsService>();
 builder.Services.AddSingleton<JwtTokenHelper>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddHealthChecks();
-
+builder.Services.AddAuthorization();
+builder.Services.AddScoped<IAuthorizationHandler, DirectoryPermissionHandler>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -58,11 +60,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("DirectoryPermissionPolicy", policy =>
-        policy.RequireAuthenticatedUser());
-});
+
 
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

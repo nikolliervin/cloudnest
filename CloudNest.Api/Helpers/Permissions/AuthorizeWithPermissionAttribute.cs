@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CloudNest.Api.Helpers
 {
-    public class PermissionsAttribute : AuthorizeAttribute, IAuthorizationRequirement
+    public class PermissionsAttribute : AuthorizeAttribute
     {
         public string Permission { get; }
 

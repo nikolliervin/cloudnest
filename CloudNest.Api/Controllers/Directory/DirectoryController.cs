@@ -7,6 +7,7 @@ using CloudNest.Api.Interfaces;
 using CloudNest.Api.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using CloudNest.Api.Helpers;
 
 namespace CloudNest.Api.Controllers
 {
@@ -22,7 +23,7 @@ namespace CloudNest.Api.Controllers
         }
 
         [HttpPost("create")]
-        [Authorize]
+        [Permissions("Add")]
         public async Task<IActionResult> CreateDirectory([FromBody] DirectoryDto directoryDto)
         {
             if (directoryDto == null)
@@ -42,6 +43,7 @@ namespace CloudNest.Api.Controllers
 
         [HttpPut("update")]
         [Authorize]
+        [Permissions("Update")]
         public async Task<IActionResult> UpdateDirectory([FromBody] DirectoryDto directoryDto)
         {
             if (directoryDto == null)
@@ -61,6 +63,7 @@ namespace CloudNest.Api.Controllers
 
         [HttpDelete("delete")]
         [Authorize]
+        [Permissions("Delete")]
         public async Task<IActionResult> DeleteDirectory([FromQuery] Guid id)
         {
             if (id == Guid.Empty)
@@ -80,6 +83,7 @@ namespace CloudNest.Api.Controllers
 
         [HttpGet("directory")]
         [Authorize]
+        [Permissions("View")]
         public async Task<IActionResult> GetDirectory(Guid id)
         {
             if (id == Guid.Empty)
@@ -99,7 +103,6 @@ namespace CloudNest.Api.Controllers
 
         [HttpGet("directories")]
         [Authorize]
-
         public async Task<IActionResult> GetUserDirectories()
         {
             var directoriesResponse = await _directoryService.GetUserDirectoriesAsync();
