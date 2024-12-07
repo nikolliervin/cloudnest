@@ -31,6 +31,7 @@ builder.Services.AddIdentity<User, Role>()
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDirectoryService, DirectoryService>();
 builder.Services.AddScoped<IDirectoryShareService, DirectoryShareService>();
+builder.Services.AddScoped<IPermissionsService, PermissionsService>();
 builder.Services.AddSingleton<JwtTokenHelper>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddHealthChecks();

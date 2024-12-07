@@ -29,6 +29,8 @@ public static class ResponseMessages
 
     public static string DirectoryShareNotFound = "Directory shared not found.";
 
+    public static string CouldNotSetDirectoryPermissions = "Could not set directory permissions";
+
 
 
 
