@@ -24,6 +24,7 @@ namespace CloudNest.Api.Middlewares
         {
             try
             {
+                Console.WriteLine(httpContext.Request);
                 await _next(httpContext);
             }
             catch (Exception ex)

@@ -17,6 +17,7 @@ import ForgotPassword from './fogotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './customIcons';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
+import { loginUser } from '../api/authApi';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -75,32 +76,37 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+const handleSubmit = (event) => {
+  event.preventDefault(); // Prevent form submission
+
+  // Check for errors in the email and password fields
+  if (emailError || passwordError) {
+    return;
+  }
+
+  const data = new FormData(event.currentTarget);
+  
+  let email = data.get('username');
+  let password = data.get('password');
+  
+  // Call the loginUser function and handle the promise correctly
+  loginUser(email, password)
+    .then((response) => {
+      // Log the successful response
+      console.log('Login successful:', response);
+      // You can use the response here, like storing the token or redirecting the user
+    })
+    .catch((error) => {
+      // Handle any errors
+      console.error('Login failed:', error);
     });
-  };
+};
 
   const validateInputs = () => {
-    const email = document.getElementById('email');
     const password = document.getElementById('password');
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
-    }
 
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
