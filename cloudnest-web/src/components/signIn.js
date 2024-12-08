@@ -18,6 +18,7 @@ import { GoogleIcon, FacebookIcon, SitemarkIcon } from './customIcons';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { loginUser } from '../api/authApi';
+import { toast } from 'react-toastify';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -77,9 +78,8 @@ export default function SignIn(props) {
   };
 
 const handleSubmit = (event) => {
-  event.preventDefault(); // Prevent form submission
+  event.preventDefault(); 
 
-  // Check for errors in the email and password fields
   if (emailError || passwordError) {
     return;
   }
@@ -89,16 +89,20 @@ const handleSubmit = (event) => {
   let email = data.get('username');
   let password = data.get('password');
   
-  // Call the loginUser function and handle the promise correctly
   loginUser(email, password)
     .then((response) => {
-      // Log the successful response
       console.log('Login successful:', response);
-      // You can use the response here, like storing the token or redirecting the user
+      
+      if (response.success) {
+        toast.success(response.message || 'Login successful!');
+      } else {
+        toast.error(response.message || 'An error occurred!');
+      }
     })
     .catch((error) => {
-      // Handle any errors
       console.error('Login failed:', error);
+      
+      toast.error(error.response?.data?.message || 'Login failed!');
     });
 };
 

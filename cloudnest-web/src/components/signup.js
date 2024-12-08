@@ -16,6 +16,9 @@ import { styled } from '@mui/material/styles';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './customIcons';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
+import { registerDto } from '../dtos/registerDto';
+import { registerUser } from '../api/authApi';
+import { toast } from 'react-toastify';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -76,18 +79,38 @@ export default function SignUp(props) {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
-    if (emailError || passwordError || confirmPasswordError) {
-      event.preventDefault();
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      confirmPassword: data.get('confirmPassword'),
-    });
+const handleSubmit = (event) => {
+  event.preventDefault();
+
+  if (emailError || passwordError || confirmPasswordError) {
+    return;
+  }
+
+  const data = new FormData(event.currentTarget);
+
+  const registerObj = {
+    username: data.get('username'),
+    email: data.get('email'),
+    password: data.get('password'),
+    confirmPassword: data.get('confirmPassword'),
   };
+
+ registerUser(registerObj)
+    .then((response) => {
+      if (response.success) {
+        toast.success(response.message || 'User created successfully!');
+        console.log('User created:', response);
+      } else {
+        toast.error(response.message || 'An error occurred!');
+      }
+    })
+    .catch((error) => {
+      toast.error(error.message || 'Registration failed!');
+      console.log('Error creating user:', error);
+    });
+};
+
+
 
   const validateInputs = () => {
     const email = document.getElementById('email');
@@ -96,7 +119,6 @@ export default function SignUp(props) {
 
     let isValid = true;
 
-    // Email validation
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
       setEmailErrorMessage('Please enter a valid email address.');
@@ -105,8 +127,6 @@ export default function SignUp(props) {
       setEmailError(false);
       setEmailErrorMessage('');
     }
-
-    // Password validation
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
       setPasswordErrorMessage('Password must be at least 6 characters long.');
@@ -116,7 +136,6 @@ export default function SignUp(props) {
       setPasswordErrorMessage('');
     }
 
-    // Confirm Password validation
     if (password.value !== confirmPassword.value) {
       setConfirmPasswordError(true);
       setConfirmPasswordErrorMessage('Passwords do not match.');

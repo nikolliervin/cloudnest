@@ -1,6 +1,7 @@
 // src/api/auth.js
 import axios from 'axios';
 import { API_BASE_URL } from '../config/appConfig';
+import { registerDto } from '../dtos/registerDto';
 
 export const loginUser = async (username, password) => {
   try {
@@ -14,14 +15,16 @@ export const loginUser = async (username, password) => {
   }
 };
 
-export const registerUser = async (email, password) => {
+export const registerUser = async (registerDto) => {
+  let response;
   try {
-    const response = await axios.post('/api/register', {
-      email,
-      password,
-    });
+    response = await axios.post(API_BASE_URL + '/auth/register',
+      registerDto
+    );
     return response.data;
   } catch (error) {
+    console.log(response);
+    console.log(error);
     throw new Error(error.response?.data?.message || 'Registration failed');
   }
 };
