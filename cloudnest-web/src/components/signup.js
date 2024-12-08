@@ -13,7 +13,6 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import ForgotPassword from './fogotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './customIcons';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
@@ -37,7 +36,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
   }),
 }));
 
-const SignInContainer = styled(Stack)(({ theme }) => ({
+const SignUpContainer = styled(Stack)(({ theme }) => ({
   height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
   minHeight: '100%',
   padding: theme.spacing(2),
@@ -60,11 +59,13 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignIn(props) {
+export default function SignUp(props) {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = React.useState(false);
+  const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -76,7 +77,7 @@ export default function SignIn(props) {
   };
 
   const handleSubmit = (event) => {
-    if (emailError || passwordError) {
+    if (emailError || passwordError || confirmPasswordError) {
       event.preventDefault();
       return;
     }
@@ -84,15 +85,18 @@ export default function SignIn(props) {
     console.log({
       email: data.get('email'),
       password: data.get('password'),
+      confirmPassword: data.get('confirmPassword'),
     });
   };
 
   const validateInputs = () => {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
 
     let isValid = true;
 
+    // Email validation
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
       setEmailErrorMessage('Please enter a valid email address.');
@@ -102,6 +106,7 @@ export default function SignIn(props) {
       setEmailErrorMessage('');
     }
 
+    // Password validation
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
       setPasswordErrorMessage('Password must be at least 6 characters long.');
@@ -111,13 +116,23 @@ export default function SignIn(props) {
       setPasswordErrorMessage('');
     }
 
+    // Confirm Password validation
+    if (password.value !== confirmPassword.value) {
+      setConfirmPasswordError(true);
+      setConfirmPasswordErrorMessage('Passwords do not match.');
+      isValid = false;
+    } else {
+      setConfirmPasswordError(false);
+      setConfirmPasswordErrorMessage('');
+    }
+
     return isValid;
   };
 
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <SignInContainer direction="column" justifyContent="space-between">
+      <SignUpContainer direction="column" justifyContent="space-between">
         <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
         <Card variant="outlined">
           <SitemarkIcon />
@@ -126,7 +141,7 @@ export default function SignIn(props) {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            Sign in
+            Sign up
           </Typography>
           <Box
             component="form"
@@ -139,13 +154,32 @@ export default function SignIn(props) {
               gap: 2,
             }}
           >
-            <FormControl>
+                  <FormControl>
               <FormLabel htmlFor="username">Username</FormLabel>
               <TextField
+                error={emailError}
+                helperText={emailErrorMessage}
                 id="username"
                 type="text"
                 name="username"
                 placeholder="coolpatatoe"
+                autoFocus
+                required
+                fullWidth
+                variant="outlined"
+                color={emailError ? 'error' : 'primary'}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="email">Email</FormLabel>
+              <TextField
+                error={emailError}
+                helperText={emailErrorMessage}
+                id="email"
+                type="email"
+                name="email"
+                placeholder="your@email.com"
+                autoComplete="email"
                 autoFocus
                 required
                 fullWidth
@@ -162,53 +196,54 @@ export default function SignIn(props) {
                 placeholder="••••••"
                 type="password"
                 id="password"
-                autoComplete="current-password"
-                autoFocus
+                autoComplete="new-password"
                 required
                 fullWidth
                 variant="outlined"
                 color={passwordError ? 'error' : 'primary'}
               />
             </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
+              <TextField
+                error={confirmPasswordError}
+                helperText={confirmPasswordErrorMessage}
+                name="confirmPassword"
+                placeholder="••••••"
+                type="password"
+                id="confirmPassword"
+                autoComplete="new-password"
+                required
+                fullWidth
+                variant="outlined"
+                color={confirmPasswordError ? 'error' : 'primary'}
+              />
+            </FormControl>
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              control={<Checkbox value="terms" color="primary" />}
+              label="I agree to the terms and conditions"
             />
-            <ForgotPassword open={open} handleClose={handleClose} />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               onClick={validateInputs}
             >
-              Sign in
+              Sign up
             </Button>
-            <Link
-              component="button"
-              type="button"
-              onClick={handleClickOpen}
-              variant="body2"
-              sx={{ alignSelf: 'center' }}
-            >
-              Forgot your password?
-            </Link>
-          </Box>
-          <Divider>or</Divider>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-   
             <Typography sx={{ textAlign: 'center' }}>
-              Don&apos;t have an account?{' '}
+              Already have an account?{' '}
               <Link
-                href="/signup"
+                href="/signin"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
-                Sign up
+                Sign in
               </Link>
             </Typography>
           </Box>
         </Card>
-      </SignInContainer>
+      </SignUpContainer>
     </AppTheme>
   );
 }
