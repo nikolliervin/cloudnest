@@ -1,24 +1,20 @@
-import logo from './logo.svg';
+import React from 'react';
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import './App.css';
+import SignIn from './components/signIn'; // Assuming SignIn component is created
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      {/* Define routes */}
+      <Routes>
+        {/* Redirect root path (/) to /signin */}
+        <Route path="/" element={<Navigate to="/signin" />} />
+        
+        {/* Define route for sign-in page */}
+        <Route path="/signin" element={<SignIn />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
