@@ -19,6 +19,7 @@ import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { loginUser } from '../api/authApi';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -63,6 +64,8 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn(props) {
+
+  const navigate = useNavigate();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -79,7 +82,6 @@ export default function SignIn(props) {
 
 const handleSubmit = (event) => {
   event.preventDefault(); 
-
   if (emailError || passwordError) {
     return;
   }
@@ -95,6 +97,7 @@ const handleSubmit = (event) => {
       
       if (response.success) {
         toast.success(response.message || 'Login successful!');
+        handleLoginResponse(response);
       } else {
         toast.error(response.message || 'An error occurred!');
       }
@@ -105,6 +108,24 @@ const handleSubmit = (event) => {
       toast.error(error.response?.data?.message || 'Login failed!');
     });
 };
+const handleLoginResponse = (response) => {
+  if (response.success) {
+    const token = response.data.token;
+    
+    const decodedToken = JSON.parse(atob(token.split('.')[1])); 
+
+    sessionStorage.setItem('userData', JSON.stringify({
+      uniqueName: decodedToken.unique_name,
+      email: decodedToken.email,
+      nameid: decodedToken.nameid,
+    }));
+
+    sessionStorage.setItem('token', token);
+
+    navigate('/dashboard');
+  }
+};
+
 
   const validateInputs = () => {
     const password = document.getElementById('password');

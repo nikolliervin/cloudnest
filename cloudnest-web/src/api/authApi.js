@@ -18,6 +18,7 @@ export const loginUser = async (username, password) => {
 export const registerUser = async (registerDto) => {
   let response;
   try {
+    console.log(registerDto);
     response = await axios.post(API_BASE_URL + '/auth/register',
       registerDto
     );
@@ -31,8 +32,23 @@ export const registerUser = async (registerDto) => {
 
 export const logoutUser = async () => {
   try {
-    await axios.post('/api/logout');
+    const token = sessionStorage.getItem('token');
+
+    if (!token) {
+      console.log('No token found, skipping logout');
+      return;
+    }
+    await axios.post(
+      `${API_BASE_URL}/auth/logout`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   } catch (error) {
     console.error('Logout failed:', error);
   }
 };
+

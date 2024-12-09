@@ -5,6 +5,7 @@ import './App.css';
 import SignIn from './components/signIn';
 import SignUp from './components/signup';
 import 'react-toastify/dist/ReactToastify.css';
+import Dashboard from './components/Dashboard'
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Navigate to="/signin" />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />
     </BrowserRouter>
