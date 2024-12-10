@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+/*theme related*/
+.MuiBox-root.css-11acm3b {
+  display: none;
+}
+.e-filemanager .e-treeview .e-list-item.e-active > .e-fullrow {
+	border: rgb(29, 36, 48);
+}
+
+.e-treeview .e-list-item.e-active > .e-fullrow {
+	background-color: rgb(29, 36, 48) !important;
+	border-color: rgba(var(--color-sf-primary-container));
+}
+
+.e-toolbar {
+	-webkit-tap-highlight-color: rgba(var(--color-sf-on-surface), 0.04);
+	background: rgb(5, 7, 10);
+	border: 0 solid rgba(var(--color-sf-outline-variant));
+	box-shadow: none;
+}
