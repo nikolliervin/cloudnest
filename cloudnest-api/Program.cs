@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.AspNetCore.Authorization;
+using CloudNest.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDirectoryService, DirectoryService>();
 builder.Services.AddScoped<IDirectoryShareService, DirectoryShareService>();
 builder.Services.AddScoped<IPermissionsService, PermissionsService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSingleton<JwtTokenHelper>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddHealthChecks();

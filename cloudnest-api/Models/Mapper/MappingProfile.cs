@@ -23,5 +23,7 @@ public class MappingProfile : Profile
     CreateMap<DirectoryPermission, DirectoryPermissionsDto>();
     CreateMap<UserPermissions, UserPermissionsDto>();
 
+
+
   }
 }

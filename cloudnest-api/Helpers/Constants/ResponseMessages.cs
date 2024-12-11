@@ -31,6 +31,9 @@ public static class ResponseMessages
 
     public static string CouldNotSetDirectoryPermissions = "Could not set directory permissions";
 
+    public static string UpdatedSuccesfully = "Updated Successfully";
+    public static string CouldNotUpdate = "Could not update!";
+
 
 
 
