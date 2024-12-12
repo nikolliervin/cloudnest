@@ -12,31 +12,43 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from './MenuButton';
 import { logoutUser } from '../../api/authApi';
 import { useNavigate } from 'react-router-dom';
+import Settings from '../settings';
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
 });
 
 export default function OptionsMenu() {
-  
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [settingsOpen, setSettingsOpen] = React.useState(false); // State for settings popup
+
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const handleLogOut = async () => {
     try {
       logoutUser();
-
-      sessionStorage.clear(); 
-      navigate('/signin'); 
+      sessionStorage.clear();
+      navigate('/signin');
     } catch (error) {
       console.error('Error during logout:', error);
     }
+  };
+
+  const handleSettingsOpen = () => {
+    setSettingsOpen(true);
+    handleClose();
+  };
+
+  const handleSettingsClose = () => {
+    setSettingsOpen(false);
   };
 
   return (
@@ -68,10 +80,9 @@ export default function OptionsMenu() {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>Settings</MenuItem>
+        <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
         <Divider />
         <MenuItem
           onClick={handleClose}
@@ -88,6 +99,9 @@ export default function OptionsMenu() {
           </ListItemIcon>
         </MenuItem>
       </Menu>
+
+      {/* Render Settings Component as Popup */}
+      <Settings open={settingsOpen} onClose={handleSettingsClose} />
     </React.Fragment>
   );
 }
