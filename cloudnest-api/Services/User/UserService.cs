@@ -25,7 +25,7 @@ namespace CloudNest.Services
         {
             var currentUserId = _userHelper.GetCurrentUserId();
 
-            var user = await _context.Users.FindAsync(currentUserId);
+            var user = _context.Users.Where(u => u.Id == currentUserId.ToString()).FirstOrDefault();
 
             if (user == null)
             {
@@ -45,7 +45,9 @@ namespace CloudNest.Services
                 if (requestUser.Password != null)
                 {
                     var passRes = _userManager.ChangePasswordAsync(user, requestUser.OldPassword, requestUser.Password);
-                    return new ApiResponse<UpdateUserDto>(new UpdateUserDto { Username = user.UserName, Email = user.Email, UserId = new Guid(user.Id) }, ResponseMessages.UpdatedSuccesfully);
+                    if (passRes.Result.Succeeded)
+                        return new ApiResponse<UpdateUserDto>(new UpdateUserDto { Username = user.UserName, Email = user.Email, UserId = new Guid(user.Id) }, ResponseMessages.UpdatedSuccesfully);
+                    return new ApiResponse<UpdateUserDto>(ResponseMessages.CouldNotUpdate);
                 }
 
                 _context.SaveChanges();
