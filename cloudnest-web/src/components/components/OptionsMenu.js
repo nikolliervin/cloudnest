@@ -12,7 +12,9 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from './MenuButton';
 import { logoutUser } from '../../api/authApi';
 import { useNavigate } from 'react-router-dom';
-import Settings from '../settings';
+import Settings from '../AccountSettings';
+import FeedbackModal from '../FeedbackModal';
+import AboutModal from '../AboutModal'; // Import About Modal
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
@@ -21,7 +23,9 @@ const MenuItem = styled(MuiMenuItem)({
 export default function OptionsMenu() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [settingsOpen, setSettingsOpen] = React.useState(false); // State for settings popup
+  const [settingsOpen, setSettingsOpen] = React.useState(false);
+  const [feedbackOpen, setFeedbackOpen] = React.useState(false);
+  const [aboutOpen, setAboutOpen] = React.useState(false);  // State for About modal
 
   const open = Boolean(anchorEl);
 
@@ -49,6 +53,24 @@ export default function OptionsMenu() {
 
   const handleSettingsClose = () => {
     setSettingsOpen(false);
+  };
+
+  const handleFeedbackOpen = () => {
+    setFeedbackOpen(true);
+    handleClose();
+  };
+
+  const handleFeedbackClose = () => {
+    setFeedbackOpen(false);
+  };
+
+  const handleAboutOpen = () => {
+    setAboutOpen(true);
+    handleClose();
+  };
+
+  const handleAboutClose = () => {
+    setAboutOpen(false);
   };
 
   return (
@@ -80,12 +102,14 @@ export default function OptionsMenu() {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={handleSettingsOpen}>My account</MenuItem>
         <Divider />
-        <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
+        <MenuItem onClick={handleFeedbackOpen}>Feedback</MenuItem> {/* Feedback item */}
+        <Divider />
+        <MenuItem onClick={handleAboutOpen}>About</MenuItem> {/* About item */}
         <Divider />
         <MenuItem
-          onClick={handleClose}
+          onClick={handleLogOut}
           sx={{
             [`& .${listItemIconClasses.root}`]: {
               ml: 'auto',
@@ -93,7 +117,7 @@ export default function OptionsMenu() {
             },
           }}
         >
-          <ListItemText onClick={handleLogOut}>Logout</ListItemText>
+          <ListItemText>Logout</ListItemText>
           <ListItemIcon>
             <LogoutRoundedIcon fontSize="small" />
           </ListItemIcon>
@@ -102,6 +126,12 @@ export default function OptionsMenu() {
 
       {/* Render Settings Component as Popup */}
       <Settings open={settingsOpen} onClose={handleSettingsClose} />
+
+      {/* Render Feedback Modal */}
+      <FeedbackModal open={feedbackOpen} onClose={handleFeedbackClose} />
+
+      {/* Render About Modal */}
+      <AboutModal open={aboutOpen} onClose={handleAboutClose} />
     </React.Fragment>
   );
 }

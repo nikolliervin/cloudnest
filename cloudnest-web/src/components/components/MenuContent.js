@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import StorageIcon from '@mui/icons-material/Storage';
 import DevicesIcon from '@mui/icons-material/Devices';
 import HomeIcon from '@mui/icons-material/Home';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import FolderSharedIcon from '@mui/icons-material/FolderShared';
@@ -31,12 +31,6 @@ const secondListItems = [
 
 const thirdListItems = [
   { text: 'Deleted', icon: <DeleteIcon /> },
-];
-
-const secondaryListItems = [
-  { text: 'Settings', icon: <SettingsRoundedIcon /> },
-  { text: 'About', icon: <InfoRoundedIcon /> },
-  { text: 'Feedback', icon: <HelpRoundedIcon /> },
 ];
 
 export default function MenuContent() {
@@ -93,24 +87,13 @@ export default function MenuContent() {
           </ListItem>
         ))}
       </List>
+      
 
       <Divider />
 
       <Stack sx={{ flexGrow: 1 }} /> 
       
-      <List dense>
-        {secondaryListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton 
-              selected={selectedIndex === index + firstListItems.length + secondListItems.length + thirdListItems.length} 
-              onClick={() => handleListItemClick(index + firstListItems.length + secondListItems.length + thirdListItems.length)} 
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+     
     </Stack>
   );
 }

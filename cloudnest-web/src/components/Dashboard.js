@@ -1,27 +1,24 @@
 import React from 'react';
-import { alpha } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import { CssBaseline, Box, Stack } from '@mui/material';
+import { alpha, createTheme, ThemeProvider } from '@mui/material/styles';
 import AppNavbar from './components/AppNavbar';
 import SideMenu from './components/SideMenu';
-import AppTheme from '../shared-theme/AppTheme';
-import FileManager from './fileManager';  
+import FileManager from './fileManager';
 
+// Create a default dark theme
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
-export default function Dashboard(props) {
+export default function Dashboard() {
   return (
-    
-    <AppTheme {...props}>
-
+    <ThemeProvider theme={darkTheme}>
       <CssBaseline enableColorScheme />
       <Box sx={{ display: 'flex' }}>
-    
-
         <SideMenu />
-
         <AppNavbar />
-
         <Box
           component="main"
           sx={(theme) => ({
@@ -40,13 +37,10 @@ export default function Dashboard(props) {
               pb: 5,
               mt: { xs: 8, md: 0 },
             }}
-          >
-          </Stack>
+          ></Stack>
         </Box>
-
       </Box>
-          <FileManager/>
-
-    </AppTheme>
+      <FileManager />
+    </ThemeProvider>
   );
 }
