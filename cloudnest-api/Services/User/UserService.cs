@@ -12,14 +12,12 @@ namespace CloudNest.Services
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
 
-        private readonly IMapper _mapper;
 
         private readonly UserHelper _userHelper;
-        public UserService(ApplicationDbContext dbContext, UserManager<User> userManager, IMapper mapper, UserHelper userHelper)
+        public UserService(ApplicationDbContext dbContext, UserManager<User> userManager, UserHelper userHelper)
         {
             _context = dbContext;
             _userManager = userManager;
-            _mapper = mapper;
             _userHelper = userHelper;
         }
 
@@ -47,11 +45,11 @@ namespace CloudNest.Services
                 if (requestUser.Password != null)
                 {
                     var passRes = _userManager.ChangePasswordAsync(user, requestUser.OldPassword, requestUser.Password);
-                    return new ApiResponse<UpdateUserDto>(_mapper.Map<UpdateUserDto>(user), ResponseMessages.UpdatedSuccesfully);
+                    return new ApiResponse<UpdateUserDto>(new UpdateUserDto { Username = user.UserName, Email = user.Email, UserId = new Guid(user.Id) }, ResponseMessages.UpdatedSuccesfully);
                 }
 
                 _context.SaveChanges();
-                return new ApiResponse<UpdateUserDto>(_mapper.Map<UpdateUserDto>(user), ResponseMessages.UpdatedSuccesfully);
+                return new ApiResponse<UpdateUserDto>(new UpdateUserDto { Username = user.UserName, Email = user.Email, UserId = new Guid(user.Id) }, ResponseMessages.UpdatedSuccesfully);
             }
 
             return new ApiResponse<UpdateUserDto>(ResponseMessages.CouldNotUpdate);
@@ -61,14 +59,14 @@ namespace CloudNest.Services
         {
             var currentUserId = _userHelper.GetCurrentUserId();
 
-            var user = await _context.Users.FindAsync(currentUserId);
+            var user = await _context.Users.Where(u => u.Id == currentUserId.ToString()).FirstOrDefaultAsync();
 
             if (user == null)
             {
                 return new ApiResponse<UpdateUserDto>(ResponseMessages.UserNotFound);
             }
 
-            return new ApiResponse<UpdateUserDto>(_mapper.Map<UpdateUserDto>(user));
+            return new ApiResponse<UpdateUserDto>(new UpdateUserDto { Username = user.UserName, Email = user.Email, UserId = new Guid(user.Id) });
 
         }
     }
