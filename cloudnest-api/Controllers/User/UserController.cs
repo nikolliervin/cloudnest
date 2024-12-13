@@ -35,5 +35,23 @@ namespace CloudNest.Controllers
 
             return Ok(result);
         }
+        [Authorize]
+        [HttpGet("getSettings")]
+        public async Task<IActionResult> GetUserSettings()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var result = await _userService.GetUserSettings();
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
     }
 }

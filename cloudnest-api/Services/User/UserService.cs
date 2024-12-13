@@ -56,5 +56,20 @@ namespace CloudNest.Services
 
             return new ApiResponse<UpdateUserDto>(ResponseMessages.CouldNotUpdate);
         }
+
+        public async Task<ApiResponse<UpdateUserDto>> GetUserSettings()
+        {
+            var currentUserId = _userHelper.GetCurrentUserId();
+
+            var user = await _context.Users.FindAsync(currentUserId);
+
+            if (user == null)
+            {
+                return new ApiResponse<UpdateUserDto>(ResponseMessages.UserNotFound);
+            }
+
+            return new ApiResponse<UpdateUserDto>(_mapper.Map<UpdateUserDto>(user));
+
+        }
     }
 }

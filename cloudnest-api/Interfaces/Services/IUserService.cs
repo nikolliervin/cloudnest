@@ -9,5 +9,6 @@ namespace CloudNest.Api.Interfaces
     public interface IUserService
     {
         Task<ApiResponse<UpdateUserDto>> UpdateUserAsync(UpdateUserDto request);
+        Task<ApiResponse<UpdateUserDto>> GetUserSettings();
     }
 }
