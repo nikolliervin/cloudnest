@@ -1,13 +1,32 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Box } from '@mui/material';
 import AppTheme from '../shared-theme/AppTheme';
+import { update } from '../api/settingsApi'
 
 export default function Settings({ open, onClose }) {
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
+    oldPassword: '',  // Added oldPassword to the form data
   });
+
+  useEffect(() => {
+    if (open) {
+      const userData = JSON.parse(sessionStorage.getItem('userData'));
+      if (userData) {
+        setFormData({
+          username: userData.uniqueName || '',
+          email: userData.email || '',
+          password: '',
+          oldPassword: '',  // Reset oldPassword when opening the dialog
+        });
+      } else {
+        console.error('User data not found in sessionStorage');
+      }
+    }
+  }, [open]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,18 +36,44 @@ export default function Settings({ open, onClose }) {
     }));
   };
 
+  const handleSave = async () => {
+    const accountSettingsDto = {
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      oldPassword: formData.oldPassword, // Include oldPassword in the request
+    };
+
+    try {
+      const data = await update(accountSettingsDto);
+
+      if (data.success) {
+        toast.success('Account settings updated successfully!');
+        console.log('Account settings saved successfully:', data);
+        sessionStorage.setItem('userData', JSON.stringify(data.data));
+        onClose();
+      } else {
+        toast.error(data.message || 'An error occurred while updating account settings.');
+        console.error('Error saving account settings:', data.message);
+      }
+    } catch (error) {
+      toast.error(error.message || 'Error saving account settings. Please try again.');
+      console.error('Error saving account settings:', error);
+    }
+  };
+
   return (
     <AppTheme>
       <Dialog
         open={open}
         onClose={onClose}
         fullWidth
-        maxWidth="sm" // Set modal to 'sm' for a more compact size
+        maxWidth="sm"
         PaperProps={{
           sx: (theme) => ({
-            backgroundColor: theme.palette.background.paper, // Lighter background for a clean look
-            padding: theme.spacing(3), // Subtle padding
-            borderRadius: '10px', // Rounded corners for a modern feel
+            backgroundColor: theme.palette.background.paper,
+            padding: theme.spacing(3),
+            borderRadius: '10px',
           }),
         }}
       >
@@ -38,7 +83,7 @@ export default function Settings({ open, onClose }) {
             display: 'flex',
             flexDirection: 'column',
             gap: 2,
-            padding: 0, // Remove extra padding for a more minimal layout
+            padding: 0,
           }}
         >
           <Box display="flex" flexDirection="column" gap={2}>
@@ -51,13 +96,13 @@ export default function Settings({ open, onClose }) {
               fullWidth
               sx={{
                 '& .MuiInputBase-root': {
-                  height: 45, // Make input height a bit more spacious
+                  height: 45,
                 },
                 '& .MuiInputLabel-root': {
-                  top: -6, // Keep label visibility intact
+                  top: -6,
                 },
                 '& .MuiOutlinedInput-root': {
-                  borderRadius: '5px', // Rounded borders for inputs
+                  borderRadius: '5px',
                 },
               }}
             />
@@ -101,17 +146,41 @@ export default function Settings({ open, onClose }) {
                 },
               }}
             />
+            <TextField
+              label="Old Password"  // New field for old password
+              name="oldPassword"
+              value={formData.oldPassword}
+              onChange={handleInputChange}
+              type="password"
+              placeholder="Enter your old password"
+              fullWidth
+              sx={{
+                '& .MuiInputBase-root': {
+                  height: 45,
+                },
+                '& .MuiInputLabel-root': {
+                  top: -6,
+                },
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '5px',
+                },
+              }}
+            />
           </Box>
         </DialogContent>
-    <DialogActions sx={{ padding: '10px 24px 16px', gap: 2 }}>
-  <Button onClick={onClose} color="secondary" sx={{ textTransform: 'none' }}>
-    Cancel
-  </Button>
-  <Button variant="contained" color="primary" sx={{ textTransform: 'none' }}>
-    Save
-  </Button>
-</DialogActions>
-
+        <DialogActions sx={{ padding: '10px 24px 16px', gap: 2 }}>
+          <Button onClick={onClose} color="secondary" sx={{ textTransform: 'none' }}>
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ textTransform: 'none' }}
+            onClick={handleSave}
+          >
+            Save
+          </Button>
+        </DialogActions>
       </Dialog>
     </AppTheme>
   );

@@ -14,7 +14,6 @@ import { logoutUser } from '../../api/authApi';
 import { useNavigate } from 'react-router-dom';
 import Settings from '../AccountSettings';
 import FeedbackModal from '../FeedbackModal';
-import AboutModal from '../AboutModal'; // Import About Modal
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
@@ -25,7 +24,6 @@ export default function OptionsMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [feedbackOpen, setFeedbackOpen] = React.useState(false);
-  const [aboutOpen, setAboutOpen] = React.useState(false);  // State for About modal
 
   const open = Boolean(anchorEl);
 
@@ -47,6 +45,7 @@ export default function OptionsMenu() {
   };
 
   const handleSettingsOpen = () => {
+    console.log('Opening settings');  // Debug log
     setSettingsOpen(true);
     handleClose();
   };
@@ -56,21 +55,14 @@ export default function OptionsMenu() {
   };
 
   const handleFeedbackOpen = () => {
+    console.log('Opening feedback modal');  // Debug log
     setFeedbackOpen(true);
     handleClose();
   };
 
   const handleFeedbackClose = () => {
+    console.log('Closing feedback modal');  // Debug log
     setFeedbackOpen(false);
-  };
-
-  const handleAboutOpen = () => {
-    setAboutOpen(true);
-    handleClose();
-  };
-
-  const handleAboutClose = () => {
-    setAboutOpen(false);
   };
 
   return (
@@ -106,8 +98,6 @@ export default function OptionsMenu() {
         <Divider />
         <MenuItem onClick={handleFeedbackOpen}>Feedback</MenuItem> {/* Feedback item */}
         <Divider />
-        <MenuItem onClick={handleAboutOpen}>About</MenuItem> {/* About item */}
-        <Divider />
         <MenuItem
           onClick={handleLogOut}
           sx={{
@@ -129,9 +119,6 @@ export default function OptionsMenu() {
 
       {/* Render Feedback Modal */}
       <FeedbackModal open={feedbackOpen} onClose={handleFeedbackClose} />
-
-      {/* Render About Modal */}
-      <AboutModal open={aboutOpen} onClose={handleAboutClose} />
     </React.Fragment>
   );
 }

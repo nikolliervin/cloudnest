@@ -1,6 +1,6 @@
 // src/api/auth.js
 import axios from 'axios';
-import { API_BASE_URL } from '../config/appConfig';
+import { API_BASE_URL } from '../api/config/appConfig'
 import { registerDto } from '../dtos/registerDto';
 
 export const loginUser = async (username, password) => {
