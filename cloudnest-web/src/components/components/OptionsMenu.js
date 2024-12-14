@@ -14,6 +14,7 @@ import { logoutUser } from '../../api/authApi';
 import { useNavigate } from 'react-router-dom';
 import Settings from '../AccountSettings';
 import FeedbackModal from '../FeedbackModal';
+import AboutModal from '../AboutModal'; // Import the AboutModal
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
@@ -24,6 +25,7 @@ export default function OptionsMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [feedbackOpen, setFeedbackOpen] = React.useState(false);
+  const [aboutOpen, setAboutOpen] = React.useState(false); // State for AboutModal
 
   const open = Boolean(anchorEl);
 
@@ -65,6 +67,17 @@ export default function OptionsMenu() {
     setFeedbackOpen(false);
   };
 
+  const handleAboutOpen = () => {
+    console.log('Opening about modal');  
+    setAboutOpen(true);
+    handleClose();
+  };
+
+  const handleAboutClose = () => {
+    console.log('Closing about modal'); 
+    setAboutOpen(false);
+  };
+
   return (
     <React.Fragment>
       <MenuButton
@@ -98,6 +111,8 @@ export default function OptionsMenu() {
         <Divider />
         <MenuItem onClick={handleFeedbackOpen}>Feedback</MenuItem> {/* Feedback item */}
         <Divider />
+        <MenuItem onClick={handleAboutOpen}>About</MenuItem> 
+        <Divider />
         <MenuItem
           onClick={handleLogOut}
           sx={{
@@ -119,6 +134,9 @@ export default function OptionsMenu() {
 
       {/* Render Feedback Modal */}
       <FeedbackModal open={feedbackOpen} onClose={handleFeedbackClose} />
+
+      {/* Render About Modal */}
+      <AboutModal open={aboutOpen} onClose={handleAboutClose} /> 
     </React.Fragment>
   );
 }

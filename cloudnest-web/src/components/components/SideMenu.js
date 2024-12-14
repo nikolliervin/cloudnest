@@ -44,9 +44,10 @@ export default function SideMenu() {
         }}
       >
         
-        <div style={{ textAlign: 'center' }}>
-      <img src="https://i.ibb.co/k88yjbp/horizontal-logo.png" alt="Logo" width="100" height="auto" />
-    </div>
+       <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+       <img src="https://i.ibb.co/k88yjbp/horizontal-logo.png" alt="Logo" width="100" height="auto" />
+       </div>
+
       </Box>
       <Divider />
       <MenuContent />

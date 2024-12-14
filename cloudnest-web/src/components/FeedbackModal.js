@@ -19,7 +19,17 @@ export default function FeedbackModal({ open, onClose }) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog 
+      open={open} 
+      onClose={onClose} 
+      fullWidth 
+      maxWidth="sm" 
+      PaperProps={{
+        sx: {
+          padding: '20px', 
+        },
+      }}
+    >
       <DialogTitle>Feedback</DialogTitle>
       <DialogContent>
         <TextField
@@ -31,6 +41,11 @@ export default function FeedbackModal({ open, onClose }) {
           variant="outlined"
           value={feedback}
           onChange={handleFeedbackChange}
+          sx={{
+            '& .MuiInputBase-root': {
+              height: 45, 
+            },
+          }}
         />
       </DialogContent>
       <DialogActions>

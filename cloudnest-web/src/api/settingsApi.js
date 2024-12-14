@@ -19,3 +19,17 @@ export const getSettings = async () => {
     throw new Error(error.response?.data?.message || 'Fetching settings failed');
   }
 };
+
+export const getStorageData = async () => {
+  try {
+    const response = await apiClient.get('/User/getStorageData');
+    
+    if (response.data.success) {
+      return response.data.data;
+    } else {
+      throw new Error(response.data.message || 'Error fetching storage data');
+    }
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Fetching storage data failed');
+  }
+};

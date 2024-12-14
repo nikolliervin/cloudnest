@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { getStorageData } from '../../api/settingsApi';  // Import the API function to fetch storage data
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -8,14 +10,14 @@ import Stack from '@mui/material/Stack';
 import StorageIcon from '@mui/icons-material/Storage';
 import DevicesIcon from '@mui/icons-material/Devices';
 import HomeIcon from '@mui/icons-material/Home';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import FolderSharedIcon from '@mui/icons-material/FolderShared';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import GradeIcon from '@mui/icons-material/Grade';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Divider from '@mui/material/Divider';
+import Modal from '@mui/material/Modal';
+import DriveDetailsModal from '../DriveDetailsModal';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const firstListItems = [
   { text: 'Home', icon: <HomeIcon /> },
@@ -35,19 +37,50 @@ const thirdListItems = [
 
 export default function MenuContent() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [selectedDrive, setSelectedDrive] = React.useState(null); // To store selected drive's details
+  const [drives, setDrives] = useState([]); // To store the drives data
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const handleListItemClick = (index) => {
     setSelectedIndex(index);
   };
+
+  const handleOpenModal = (drive) => {
+    setSelectedDrive(drive);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false); 
+    setSelectedDrive(null); 
+  };
+
+  
+  useEffect(() => {
+    const fetchStorageData = async () => {
+      try {
+        const data = await getStorageData();  
+        setDrives(data);  
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+    
+    fetchStorageData();
+  }, []);
 
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       <List dense>
         {firstListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton 
-              selected={selectedIndex === index} 
-              onClick={() => handleListItemClick(index)} 
+            <ListItemButton
+              selected={selectedIndex === index}
+              onClick={() => handleListItemClick(index)}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
@@ -61,9 +94,9 @@ export default function MenuContent() {
       <List dense>
         {secondListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton 
-              selected={selectedIndex === index + firstListItems.length} 
-              onClick={() => handleListItemClick(index + firstListItems.length)} 
+            <ListItemButton
+              selected={selectedIndex === index + firstListItems.length}
+              onClick={() => handleListItemClick(index + firstListItems.length)}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
@@ -77,9 +110,9 @@ export default function MenuContent() {
       <List dense>
         {thirdListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton 
-              selected={selectedIndex === index + firstListItems.length + secondListItems.length} 
-              onClick={() => handleListItemClick(index + firstListItems.length + secondListItems.length)} 
+            <ListItemButton
+              selected={selectedIndex === index + firstListItems.length + secondListItems.length}
+              onClick={() => handleListItemClick(index + firstListItems.length + secondListItems.length)}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
@@ -87,13 +120,47 @@ export default function MenuContent() {
           </ListItem>
         ))}
       </List>
-      
 
       <Divider />
 
-      <Stack sx={{ flexGrow: 1 }} /> 
+   
+      <List dense>
+        {loading && <div>Loading drives...</div>}  
+        {error && <div style={{ color: 'red' }}>{error}</div>} 
+
+        {drives.map((drive, index) => (
+          <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+            <ListItemButton onClick={() => handleOpenModal(drive)}>
+              <ListItemIcon>
+                <StorageIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={`Drive: ${drive.driveName}`}
+                secondary={`Used: ${drive.usedSpace} GB | Free: ${drive.freeSpace} GB`}
+              />
+            </ListItemButton>
+
+            
+            <LinearProgress
+              variant="determinate"
+              value={(drive.usedSpace / drive.totalSize) * 100}
+              sx={{ mt: 1 }}
+            />
+          </ListItem>
+        ))}
+      </List>
+
+      <Divider />
+
       
-     
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <DriveDetailsModal 
+          selectedDrive={selectedDrive} 
+          onClose={handleCloseModal} 
+        />
+      </Modal>
+
+      <Stack sx={{ flexGrow: 1 }} />
     </Stack>
   );
 }

@@ -53,5 +53,23 @@ namespace CloudNest.Controllers
 
             return Ok(result);
         }
+        [Authorize]
+        [HttpGet("getStorageData")]
+        public async Task<IActionResult> GetStorage()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var result = await _userService.GetStorageData();
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
     }
 }

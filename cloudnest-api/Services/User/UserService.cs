@@ -1,9 +1,11 @@
 using AutoMapper;
+using CloudNest.Api.Dtos;
 using CloudNest.Api.Helpers;
 using CloudNest.Api.Interfaces;
 using CloudNest.Api.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace CloudNest.Services
 {
@@ -69,6 +71,19 @@ namespace CloudNest.Services
             }
 
             return new ApiResponse<UpdateUserDto>(new UpdateUserDto { Username = user.UserName, Email = user.Email, UserId = new Guid(user.Id) });
+
+        }
+
+        public async Task<ApiResponse<List<StorageInfoDto>>> GetStorageData()
+        {
+            var storage = _userHelper.GetStorageInfo();
+
+            if (storage != null && storage.ToList().Count > 0)
+            {
+                return new ApiResponse<List<StorageInfoDto>>(storage);
+            }
+
+            return new ApiResponse<List<StorageInfoDto>>(ResponseMessages.CouldNotFindStorage);
 
         }
     }

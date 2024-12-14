@@ -34,6 +34,8 @@ public static class ResponseMessages
     public static string UpdatedSuccesfully = "Updated Successfully";
     public static string CouldNotUpdate = "Could not update!";
 
+    public static string CouldNotFindStorage = "Could not find storage for your user!";
+
 
 
 
