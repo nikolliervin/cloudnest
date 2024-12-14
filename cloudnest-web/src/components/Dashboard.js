@@ -16,31 +16,22 @@ export default function Dashboard() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline enableColorScheme />
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', height: '100vh' }}>
         <SideMenu />
-        <AppNavbar />
         <Box
-          component="main"
-          sx={(theme) => ({
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
             flexGrow: 1,
-            backgroundColor: theme.vars
-              ? `rgba(${theme.vars.palette.background.defaultChannel} / 1)`
-              : alpha(theme.palette.background.default, 1),
-            overflow: 'auto',
-          })}
+            overflow: 'hidden', // Prevent overflow in the main content area
+          }}
         >
-          <Stack
-            spacing={2}
-            sx={{
-              alignItems: 'center',
-              mx: 3,
-              pb: 5,
-              mt: { xs: 8, md: 0 },
-            }}
-          ></Stack>
+          <AppNavbar />
+       
+            <FileManager />
+        
         </Box>
       </Box>
-      <FileManager />
     </ThemeProvider>
   );
 }

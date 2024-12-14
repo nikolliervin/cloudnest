@@ -24,6 +24,7 @@
     "cra-template": "1.2.0",
     "devextreme": "^24.1.7",
     "devextreme-react": "^24.1.7",
+    "dotenv": "^16.4.7",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.6",
     "react-dom": "^19.0.0",
